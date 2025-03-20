@@ -50,43 +50,42 @@ to visualize temperature patterns and trends over time.
 
 # Sidebar for controls
 st.sidebar.header('Visualization Controls')
-
-# Year range slider
-min_year = int(df['year'].min())
-max_year = int(df['year'].max())
-
-year_range = st.sidebar.slider(
-    'Year Range',
-    min_value=min_year,
-    max_value=max_year,
-    value=[min_year, max_year])
-
-# Season selection
-seasons = ['All Year', 'Winter (Dec-Feb)', 'Spring (Mar-May)', 'Summer (Jun-Aug)', 'Fall (Sep-Nov)']
-selected_season = st.sidebar.selectbox('Season', seasons)
-
-# Color scale selection
-color_scales = ['RdBu_r', 'Viridis', 'Plasma', 'Inferno', 'Turbo']
-selected_colorscale = st.sidebar.selectbox('Color Scale', color_scales)
-
-# Visualization type
 viz_type = st.sidebar.radio(
-    'Select Visualization',
     ['Monthly Averages', 'Heatmap']
 )
 
-# Filter data based on year range
-filtered_df = df[(df['year'] >= year_range[0]) & (df['year'] <= year_range[1])]
+# # Year range slider
+# min_year = int(df['year'].min())
+# max_year = int(df['year'].max())
 
-# Filter data based on season if needed
-if selected_season == 'Winter (Dec-Feb)':
-    filtered_df = filtered_df[((filtered_df['month'] == 12) | (filtered_df['month'] <= 2))]
-elif selected_season == 'Spring (Mar-May)':
-    filtered_df = filtered_df[(filtered_df['month'] >= 3) & (filtered_df['month'] <= 5)]
-elif selected_season == 'Summer (Jun-Aug)':
-    filtered_df = filtered_df[(filtered_df['month'] >= 6) & (filtered_df['month'] <= 8)]
-elif selected_season == 'Fall (Sep-Nov)':
-    filtered_df = filtered_df[(filtered_df['month'] >= 9) & (filtered_df['month'] <= 11)]
+# year_range = st.sidebar.slider(
+#     'Year Range',
+#     min_value=min_year,
+#     max_value=max_year,
+#     value=[min_year, max_year])
+
+# # Season selection
+# seasons = ['All Year', 'Winter (Dec-Feb)', 'Spring (Mar-May)', 'Summer (Jun-Aug)', 'Fall (Sep-Nov)']
+# selected_season = st.sidebar.selectbox('Season', seasons)
+
+# # Color scale selection
+# color_scales = ['RdBu_r', 'Viridis', 'Plasma', 'Inferno', 'Turbo']
+# selected_colorscale = st.sidebar.selectbox('Color Scale', color_scales)
+
+
+
+# # Filter data based on year range
+# filtered_df = df[(df['year'] >= year_range[0]) & (df['year'] <= year_range[1])]
+
+# # Filter data based on season if needed
+# if selected_season == 'Winter (Dec-Feb)':
+#     filtered_df = filtered_df[((filtered_df['month'] == 12) | (filtered_df['month'] <= 2))]
+# elif selected_season == 'Spring (Mar-May)':
+#     filtered_df = filtered_df[(filtered_df['month'] >= 3) & (filtered_df['month'] <= 5)]
+# elif selected_season == 'Summer (Jun-Aug)':
+#     filtered_df = filtered_df[(filtered_df['month'] >= 6) & (filtered_df['month'] <= 8)]
+# elif selected_season == 'Fall (Sep-Nov)':
+#     filtered_df = filtered_df[(filtered_df['month'] >= 9) & (filtered_df['month'] <= 11)]
 
 # Display different visualizations based on selection
 if viz_type == 'Heatmap':
@@ -176,17 +175,3 @@ else:
     
     st.plotly_chart(anim_fig, use_container_width=True)
 
-
-# Add explanatory text and sources
-st.sidebar.markdown("""
-## About this Data
-This dashboard visualizes temperature data from Cornell Tech location from 1950 to present.
-
-### How to use:
-- Use the **Year Range** slider to focus on specific time periods
-- Select a **Season** to filter the data
-- Choose different **Color Scales** for the visualizations
-- Switch between visualization types using the radio buttons
-
-Data source: Weather dataset
-""")
