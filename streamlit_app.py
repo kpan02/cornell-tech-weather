@@ -51,45 +51,50 @@ to visualize temperature patterns and trends over time.
 # Sidebar for controls
 st.sidebar.header('Visualization Controls')
 viz_type = st.sidebar.radio(
+    'Visualization Type',
     ['Monthly Averages', 'Heatmap']
 )
-
-# # Year range slider
-# min_year = int(df['year'].min())
-# max_year = int(df['year'].max())
-
-# year_range = st.sidebar.slider(
-#     'Year Range',
-#     min_value=min_year,
-#     max_value=max_year,
-#     value=[min_year, max_year])
-
-# # Season selection
-# seasons = ['All Year', 'Winter (Dec-Feb)', 'Spring (Mar-May)', 'Summer (Jun-Aug)', 'Fall (Sep-Nov)']
-# selected_season = st.sidebar.selectbox('Season', seasons)
-
-# # Color scale selection
-# color_scales = ['RdBu_r', 'Viridis', 'Plasma', 'Inferno', 'Turbo']
-# selected_colorscale = st.sidebar.selectbox('Color Scale', color_scales)
-
-
-
-# # Filter data based on year range
-# filtered_df = df[(df['year'] >= year_range[0]) & (df['year'] <= year_range[1])]
-
-# # Filter data based on season if needed
-# if selected_season == 'Winter (Dec-Feb)':
-#     filtered_df = filtered_df[((filtered_df['month'] == 12) | (filtered_df['month'] <= 2))]
-# elif selected_season == 'Spring (Mar-May)':
-#     filtered_df = filtered_df[(filtered_df['month'] >= 3) & (filtered_df['month'] <= 5)]
-# elif selected_season == 'Summer (Jun-Aug)':
-#     filtered_df = filtered_df[(filtered_df['month'] >= 6) & (filtered_df['month'] <= 8)]
-# elif selected_season == 'Fall (Sep-Nov)':
-#     filtered_df = filtered_df[(filtered_df['month'] >= 9) & (filtered_df['month'] <= 11)]
 
 # Display different visualizations based on selection
 if viz_type == 'Heatmap':
     st.header('Temperature Heatmap', divider='gray')
+    
+    # Move controls from sidebar to main content area
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        # Year range slider
+        min_year = int(df['year'].min())
+        max_year = int(df['year'].max())
+        
+        year_range = st.slider(
+            'Year Range',
+            min_value=min_year,
+            max_value=max_year,
+            value=[min_year, max_year])
+    
+    with col2:
+        # Season selection
+        seasons = ['All Year', 'Winter (Dec-Feb)', 'Spring (Mar-May)', 'Summer (Jun-Aug)', 'Fall (Sep-Nov)']
+        selected_season = st.selectbox('Season', seasons)
+    
+    with col3:
+        # Color scale selection
+        color_scales = ['RdBu_r', 'Viridis', 'Plasma', 'Inferno', 'Turbo']
+        selected_colorscale = st.selectbox('Color Scale', color_scales)
+    
+    # Filter data based on year range
+    filtered_df = df[(df['year'] >= year_range[0]) & (df['year'] <= year_range[1])]
+    
+    # Filter data based on season if needed
+    if selected_season == 'Winter (Dec-Feb)':
+        filtered_df = filtered_df[((filtered_df['month'] == 12) | (filtered_df['month'] <= 2))]
+    elif selected_season == 'Spring (Mar-May)':
+        filtered_df = filtered_df[(filtered_df['month'] >= 3) & (filtered_df['month'] <= 5)]
+    elif selected_season == 'Summer (Jun-Aug)':
+        filtered_df = filtered_df[(filtered_df['month'] >= 6) & (filtered_df['month'] <= 8)]
+    elif selected_season == 'Fall (Sep-Nov)':
+        filtered_df = filtered_df[(filtered_df['month'] >= 9) & (filtered_df['month'] <= 11)]
     
     # Create pivot table for heatmap
     heatmap_data = filtered_df.groupby(['year', 'day_of_year'])['Ftemp'].mean().reset_index()
@@ -151,6 +156,38 @@ if viz_type == 'Heatmap':
         st.metric("Minimum Temperature", f"{min_temp:.1f}°F")
 
 else:
+    # For Monthly Averages visualization, we'll keep the controls in the sidebar
+    # Year range slider
+    min_year = int(df['year'].min())
+    max_year = int(df['year'].max())
+    
+    year_range = st.sidebar.slider(
+        'Year Range',
+        min_value=min_year,
+        max_value=max_year,
+        value=[min_year, max_year])
+    
+    # Season selection
+    seasons = ['All Year', 'Winter (Dec-Feb)', 'Spring (Mar-May)', 'Summer (Jun-Aug)', 'Fall (Sep-Nov)']
+    selected_season = st.sidebar.selectbox('Season', seasons)
+    
+    # Color scale selection
+    color_scales = ['RdBu_r', 'Viridis', 'Plasma', 'Inferno', 'Turbo']
+    selected_colorscale = st.sidebar.selectbox('Color Scale', color_scales)
+    
+    # Filter data based on year range
+    filtered_df = df[(df['year'] >= year_range[0]) & (df['year'] <= year_range[1])]
+    
+    # Filter data based on season if needed
+    if selected_season == 'Winter (Dec-Feb)':
+        filtered_df = filtered_df[((filtered_df['month'] == 12) | (filtered_df['month'] <= 2))]
+    elif selected_season == 'Spring (Mar-May)':
+        filtered_df = filtered_df[(filtered_df['month'] >= 3) & (filtered_df['month'] <= 5)]
+    elif selected_season == 'Summer (Jun-Aug)':
+        filtered_df = filtered_df[(filtered_df['month'] >= 6) & (filtered_df['month'] <= 8)]
+    elif selected_season == 'Fall (Sep-Nov)':
+        filtered_df = filtered_df[(filtered_df['month'] >= 9) & (filtered_df['month'] <= 11)]
+        
     st.header('Monthly Average Temperatures', divider='gray')
     
     # Compute monthly averages by year
