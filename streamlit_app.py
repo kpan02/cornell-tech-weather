@@ -19,7 +19,7 @@ st.set_page_config(
 @st.cache_data
 def get_weather_data():
     # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'weather.csv'
+    DATA_FILENAME = Path(__file__).parent/'data/weather.csv'
     df = pd.read_csv(DATA_FILENAME)
     
     # Convert to datetime and calculate Fahrenheit
