@@ -1,19 +1,5 @@
-# :earth_americas: GDP dashboard template
+# ☀️ Cornell Tech Weather Dashboard
 
-A simple Streamlit app showing the GDP of different countries in the world.
+A simple Streamlit app showing historical temperature data at Cornell Tech from 1950 to present
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://gdp-dashboard-template.streamlit.app/)
-
-### How to run it on your own machine
-
-1. Install the requirements
-
-   ```
-   $ pip install -r requirements.txt
-   ```
-
-2. Run the app
-
-   ```
-   $ streamlit run streamlit_app.py
-   ```
+https://cornell-tech-weather1.streamlit.app/
