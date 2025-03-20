@@ -162,10 +162,9 @@ elif viz_type == 'Monthly Averages':
         monthly_avg,
         x="month",
         y="Ftemp",
-        color='year',
+        color=monthly_avg['year'].astype(str),
         title="Monthly Average Temperature (Cornell Tech)",
         labels={"month": "Month", "Ftemp": "Avg Temp (°F)"},
-        color_continuous_scale=selected_colorscale
     )
     
     # Update x-axis to show month names
@@ -182,9 +181,9 @@ elif viz_type == 'Monthly Averages':
             monthly_avg,
             x="month",
             y="Ftemp",
-            color='year',
+            color=monthly_avg['year'].astype(str),  # Convert year to string
             title="Monthly Average Temperature Animation",
-            labels={"month": "Month", "Ftemp": "Avg Temp (°F)"},
+            labels={"month": "Month", "Ftemp": "Avg Temp (°F)", "color": "Year"},
             animation_frame='year',
             range_y=[monthly_avg['Ftemp'].min()-5, monthly_avg['Ftemp'].max()+5]
         )
