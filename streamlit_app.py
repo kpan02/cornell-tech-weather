@@ -93,7 +93,7 @@ if viz_type == 'Heatmap':
     )
     
     fig.update_layout(
-        xaxis_title='Day of Year',
+        xaxis_title='Month',
         yaxis_title='Year',
         height=700,
     )
