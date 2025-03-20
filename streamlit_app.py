@@ -72,7 +72,7 @@ selected_colorscale = st.sidebar.selectbox('Color Scale', color_scales)
 # Visualization type
 viz_type = st.sidebar.radio(
     'Select Visualization',
-    ['Heatmap', 'Monthly Averages', 'Yearly Trend']
+    ['Monthly Averages', 'Heatmap']
 )
 
 # Filter data based on year range
@@ -151,81 +151,31 @@ if viz_type == 'Heatmap':
         min_temp = filtered_df['Ftemp'].min()
         st.metric("Minimum Temperature", f"{min_temp:.1f}°F")
 
-elif viz_type == 'Monthly Averages':
+else:
     st.header('Monthly Average Temperatures', divider='gray')
     
     # Compute monthly averages by year
     monthly_avg = filtered_df.groupby(['year', 'month'])['Ftemp'].mean().reset_index()
-    
-    # Interactive plot
-    fig = px.line(
+
+    anim_fig = px.line(
         monthly_avg,
         x="month",
         y="Ftemp",
-        color=monthly_avg['year'].astype(str),
-        title="Monthly Average Temperature (Cornell Tech)",
-        labels={"month": "Month", "Ftemp": "Avg Temp (°F)"},
+        color=monthly_avg['year'].astype(str),  # Convert year to string
+        title="Monthly Average Temperature Animation",
+        labels={"month": "Month", "Ftemp": "Avg Temp (°F)", "color": "Year"},
+        animation_frame='year',
+        range_y=[monthly_avg['Ftemp'].min()-5, monthly_avg['Ftemp'].max()+5]
     )
     
     # Update x-axis to show month names
-    fig.update_xaxes(
+    anim_fig.update_xaxes(
         tickvals=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         ticktext=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     )
     
-    st.plotly_chart(fig, use_container_width=True)
-    
-    # Add animation option
-    if st.checkbox("Show animated version over years"):
-        anim_fig = px.line(
-            monthly_avg,
-            x="month",
-            y="Ftemp",
-            color=monthly_avg['year'].astype(str),  # Convert year to string
-            title="Monthly Average Temperature Animation",
-            labels={"month": "Month", "Ftemp": "Avg Temp (°F)", "color": "Year"},
-            animation_frame='year',
-            range_y=[monthly_avg['Ftemp'].min()-5, monthly_avg['Ftemp'].max()+5]
-        )
-        
-        # Update x-axis to show month names
-        anim_fig.update_xaxes(
-            tickvals=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-            ticktext=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        )
-        
-        st.plotly_chart(anim_fig, use_container_width=True)
+    st.plotly_chart(anim_fig, use_container_width=True)
 
-else:  # Yearly Trend
-    st.header('Yearly Temperature Trends', divider='gray')
-    
-    # Compute yearly averages
-    yearly_avg = filtered_df.groupby('year')['Ftemp'].mean().reset_index()
-    
-    # Add trendline
-    fig = px.scatter(
-        yearly_avg, 
-        x='year', 
-        y='Ftemp', 
-        trendline='ols',
-        title='Yearly Average Temperature with Trend (Cornell Tech)',
-        labels={"year": "Year", "Ftemp": "Avg Temp (°F)"}
-    )
-    
-    fig.update_traces(marker=dict(size=8))
-    
-    st.plotly_chart(fig, use_container_width=True)
-    
-    # Calculate trend
-    first_year_temp = yearly_avg[yearly_avg['year'] == yearly_avg['year'].min()]['Ftemp'].values[0]
-    last_year_temp = yearly_avg[yearly_avg['year'] == yearly_avg['year'].max()]['Ftemp'].values[0]
-    temp_change = last_year_temp - first_year_temp
-    
-    st.metric(
-        label=f"Temperature Change ({yearly_avg['year'].min()} to {yearly_avg['year'].max()})",
-        value=f"{abs(temp_change):.2f}°F",
-        delta=f"{'Warmer' if temp_change > 0 else 'Cooler'}"
-    )
 
 # Add explanatory text and sources
 st.sidebar.markdown("""
