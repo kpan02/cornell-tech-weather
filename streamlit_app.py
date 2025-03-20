@@ -85,7 +85,7 @@ if viz_type == 'Heatmap':
     
     fig = px.imshow(
         heatmap_pivot, 
-        labels=dict(x="Day of Year", y="Year", color="Temperature (°F)"),
+        labels=dict(x="Month", y="Year", color="Temperature (°F)"),
         x=heatmap_pivot.columns,
         y=heatmap_pivot.index,
         color_continuous_scale=selected_colorscale,
